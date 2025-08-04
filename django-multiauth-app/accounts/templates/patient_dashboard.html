@@ -1,4 +1,76 @@
-<h2>Patient Dashboard</h2>
-<p>Welcome, {{ user.first_name }}</p>
-<p>Email: {{ user.email }}</p>
-<p>Address: {{ user.address_line1 }}, {{ user.city }}, {{ user.state }} - {{ user.pincode }}</p>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100">
+
+  <!-- 🔷 Navigation Header -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto py-4 px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Patient Dashboard</h1>
+      <a href="{% url 'logout' %}" class="text-red-500 hover:underline">Logout</a>
+    </div>
+  </header>
+
+  <!-- 🧾 Main Dashboard Content -->
+  <main class="py-10 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- 👤 Profile Card -->
+      <div class="bg-white p-6 rounded-xl shadow-md col-span-1">
+        <div class="flex flex-col items-center text-center">
+
+          <!-- 📸 Uploaded Profile Picture -->
+          {% if user.profile_picture %}
+            <img src="{{ user.profile_picture.url }}" alt="Profile Picture"
+                 class="w-24 h-24 rounded-full mb-4 object-cover border" />
+          {% else %}
+            <div class="w-24 h-24 rounded-full mb-4 bg-gray-200 flex items-center justify-center text-gray-500 border">
+              No Image
+            </div>
+          {% endif %}
+
+          <!-- 🧑 Patient Info -->
+          <h2 class="text-xl font-semibold text-gray-800">
+            {{ user.first_name }} {{ user.last_name }}
+          </h2>
+          <p class="text-gray-500 capitalize">{{ user.user_type }}</p>
+
+          <!-- ✉️ Contact Info -->
+          <p class="text-sm text-gray-600 mt-2">{{ user.email }}</p>
+          
+          <!-- 🏠 Address -->
+          <p class="text-sm text-gray-600">
+            {{ user.address_line1 }}, {{ user.city }}, {{ user.state }} - {{ user.pincode }}
+          </p>
+        </div>
+      </div>
+
+      <!-- 📊 Dashboard Stats -->
+      <div class="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        <div class="bg-white p-6 rounded-xl shadow text-center">
+          <h3 class="text-lg font-semibold text-gray-700">Appointments</h3>
+          <p class="text-2xl font-bold text-green-600 mt-2">5</p> <!-- Replace with real data -->
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow text-center">
+          <h3 class="text-lg font-semibold text-gray-700">Prescriptions</h3>
+          <p class="text-2xl font-bold text-green-600 mt-2">3</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow text-center">
+          <h3 class="text-lg font-semibold text-gray-700">Messages</h3>
+          <p class="text-2xl font-bold text-green-600 mt-2">1</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow text-center">
+          <h3 class="text-lg font-semibold text-gray-700">Profile Views</h3>
+          <p class="text-2xl font-bold text-green-600 mt-2">12</p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

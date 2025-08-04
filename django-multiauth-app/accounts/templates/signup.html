@@ -1,17 +1,70 @@
-<h2>Signup</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
+{% extends 'base.html' %}
+{% load static %}
 
-    <button type="submit">Register</button>
-</form>
+{% block content %}
+<div class="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
 
-{% if form.errors %}
-    <ul style="color: red;">
-        {% for field in form %}
-            {% for error in field.errors %}
-                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
-            {% endfor %}
-        {% endfor %}
-    </ul>
-{% endif %}
+    <!-- 📝 Page Heading -->
+    <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Create your account</h2>
+
+    <!-- 🧾 Signup Form -->
+    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+
+      <!-- 🔴 Non-field errors (e.g., password mismatch) -->
+      {% if form.non_field_errors %}
+        <div class="text-red-600 text-sm">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- 🔁 Render each form field manually with custom styling -->
+      {% for field in form %}
+        <div>
+          <!-- Label -->
+          <label for="{{ field.id_for_label }}" class="block text-gray-700 mb-1">
+            {{ field.label }}
+          </label>
+
+          <!-- Input Field -->
+          {{ field }}
+
+          <!-- 🔥 Styling class (adds Tailwind to each field input) -->
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              const field = document.getElementById('{{ field.id_for_label }}');
+              if (field) {
+                field.classList.add(
+                  'w-full', 'border', 'border-gray-300', 'rounded-lg', 'px-4', 'py-2',
+                  'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'
+                );
+              }
+            });
+          </script>
+
+          <!-- ❗ Field-specific error -->
+          {% if field.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <!-- 🚀 Submit Button -->
+      <button type="submit"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition duration-300">
+        Sign Up
+      </button>
+    </form>
+
+    <!-- 🔁 Redirect to Login -->
+    <p class="text-center text-sm text-gray-600 mt-4">
+      Already have an account?
+      <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Log in</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}

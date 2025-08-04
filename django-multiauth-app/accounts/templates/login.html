@@ -1,8 +1,56 @@
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    Username: <input type="text" name="username"><br>
-    Password: <input type="password" name="password"><br>
-    <button type="submit">Login</button>
-</form>
-{% if error %}<p style="color:red;">{{ error }}</p>{% endif %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- 🌆 Full-page background and centering -->
+<div class="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+  <!-- 🧾 Login Box -->
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+
+    <!-- 📝 Page Heading -->
+    <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Welcome Back</h2>
+
+    <!-- ⚠️ Error Message (if login fails) -->
+    {% if error %}
+      <p class="text-red-600 text-center text-sm mb-4">{{ error }}</p>
+    {% endif %}
+
+    <!-- 🧾 Login Form -->
+    <form method="POST" class="space-y-4">
+      {% csrf_token %}
+
+      <!-- 🔡 Username Field -->
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        value="{{ request.POST.username }}"
+        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <!-- 🔐 Password Field -->
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        class="w-full border border-gray-300 rounded-lg px-4 py-2"
+      />
+
+      <!-- 🚀 Submit Button -->
+      <button
+        type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition duration-300"
+      >
+        Log In
+      </button>
+    </form>
+
+    <!-- 👥 Redirect to Signup -->
+    <p class="text-center text-sm text-gray-600 mt-4">
+      Don’t have an account?
+      <a href="{% url 'signup' %}" class="text-blue-600 hover:underline">Sign up</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}
