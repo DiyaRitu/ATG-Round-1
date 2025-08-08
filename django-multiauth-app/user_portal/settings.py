@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
+    'blog',
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -67,10 +68,16 @@ WSGI_APPLICATION = 'user_portal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',     
+        'NAME': 'myprojectdb',                    
+        'USER': 'myuser',                         
+        'PASSWORD': 'mypassword',                
+        'HOST': 'localhost',                      
+        'PORT': '3306',                           
     }
 }
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -96,3 +103,18 @@ NPM_BIN_PATH = "E:/Dev tools/node.js/npm.cmd"
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'  # fallback in case user type isn't resolved
 LOGOUT_REDIRECT_URL = 'login'
+
+import os
+
+MEDIA_URL = '/media/'  # This is the URL that will serve media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # This is the folder where uploaded files go
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
+

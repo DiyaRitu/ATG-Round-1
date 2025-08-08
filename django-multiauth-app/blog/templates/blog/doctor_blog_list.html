@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-10 px-6">
+  <div class="max-w-5xl mx-auto">
+    
+    <!-- 🔵 Page Title -->
+    <h1 class="text-3xl font-bold text-blue-700 mb-8 text-center">My Blog Posts</h1>
+
+    <!-- ✅ Blog List -->
+    <div class="grid grid-cols-1 gap-6">
+      {% for blog in blogs %}
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <!-- 🟦 Blog Title + Category -->
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-xl font-semibold text-gray-800">{{ blog.title }}</h2>
+          <span class="text-sm text-white bg-blue-600 px-3 py-1 rounded-full">{{ blog.category }}</span>
+        </div>
+
+        <!-- 🖼️ Image -->
+        {% if blog.image %}
+        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-48 object-cover rounded mb-4" />
+        {% endif %}
+
+        <!-- ✏️ Summary -->
+        <p class="text-gray-600 mb-3">
+          {% with blog.summary|truncatewords:15 as short_summary %}
+            {{ short_summary }}{% if blog.summary|length > short_summary|length %}...{% endif %}
+          {% endwith %}
+        </p>
+
+        <!-- 🟨 Status -->
+        {% if blog.is_draft %}
+          <span class="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded">Draft</span>
+        {% else %}
+          <span class="text-xs text-green-700 bg-green-100 px-2 py-1 rounded">Published</span>
+        {% endif %}
+      </div>
+      {% empty %}
+      <p class="text-center text-gray-500">You haven't uploaded any blogs yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

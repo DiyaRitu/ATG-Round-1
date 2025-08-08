@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', home, name='home'),
     path("__reload__/", include("django_browser_reload.urls")),  # optional
+    path('blog/', include('blog.urls')),
 ]
 
 # Serve media files during development

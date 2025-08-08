@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserForm
 from .models import CustomUser
+from django.contrib.auth.views import LogoutView
+from django.contrib import messages
 
 
 # Home page view — can be a landing page or welcome screen
@@ -67,3 +69,9 @@ def patient_dashboard(request):
 @login_required
 def doctor_dashboard(request):
     return render(request, 'doctor_dashboard.html', {'user': request.user})
+
+#logout
+class CustomLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "You have been logged out.")
+        return super().dispatch(request, *args, **kwargs)

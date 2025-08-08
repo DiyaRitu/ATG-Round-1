@@ -5,28 +5,33 @@
     <meta charset="UTF-8">
     <title>{% block title %}MultiAuth App{% endblock %}</title>
 
-    <!-- ✅ Tailwind CSS via django-tailwind (local) -->
+    <!-- ✅ Tailwind CSS via django-tailwind -->
     {% tailwind_css %}
-    <!-- ✅ Fallback CDN for safety (optional but useful) -->
+
+    <!-- ✅ Fallback CDN Tailwind (for safety) -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800">
 
-    <!-- 🌐 Navbar -->
+    <!-- 🔹 Navbar -->
     <header class="bg-white shadow p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <!-- 🔷 App Title -->
+            <!-- App Name -->
             <h1 class="text-2xl font-bold text-blue-600">MultiAuth App</h1>
 
-            <!-- 🧭 Navigation Links (Dynamic) -->
+            <!-- Navigation -->
             <nav class="space-x-4">
                 <a href="{% url 'home' %}" class="text-blue-600 hover:underline">Home</a>
 
                 {% if user.is_authenticated %}
-                    <!-- 👤 Show logout when user is logged in -->
-                    <a href="{% url 'logout' %}" class="text-red-500 hover:underline">Logout</a>
+                    <!-- Secure Logout (POST) -->
+                    <form method="POST" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500 hover:underline bg-transparent border-none p-0 m-0 cursor-pointer">
+                            Logout
+                        </button>
+                    </form>
                 {% else %}
-                    <!-- 🔐 Show login/signup when not authenticated -->
                     <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Login</a>
                     <a href="{% url 'signup' %}" class="text-blue-600 hover:underline">Signup</a>
                 {% endif %}
@@ -34,14 +39,25 @@
         </div>
     </header>
 
-    <!-- 🧩 Main Content Area -->
-    <main class="container mx-auto py-6">
+    <!-- 🔸 Django Messages -->
+    {% if messages %}
+    <div class="container mx-auto px-4 mt-4">
+        {% for message in messages %}
+            <div class="text-{{ message.tags }}-700 bg-{{ message.tags }}-100 border-l-4 border-{{ message.tags }}-500 p-4 mb-4 rounded">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- 🧩 Page Content -->
+    <main class="container mx-auto py-6 px-4">
         {% block content %}
         {% endblock %}
     </main>
 
     <!-- 📌 Footer -->
-    <footer class="bg-gray-200 text-center py-4 text-sm text-gray-500">
+    <footer class="bg-gray-200 text-center py-4 text-sm text-gray-600">
         &copy; 2025 MultiAuth App
     </footer>
 

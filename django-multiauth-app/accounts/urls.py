@@ -1,6 +1,12 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.views import LogoutView
+from django.contrib import messages
+from django.shortcuts import redirect
+
+def custom_logout_view(request):
+    messages.success(request, "You have been logged out.")
+    return LogoutView.as_view()(request)
 
 
 urlpatterns = [
